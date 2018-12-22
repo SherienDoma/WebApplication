@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+
+<!--this is rigester page it have the java script validation-->
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel = "stylesheet"
+              type = "text/css"
+              href = "myStyle.css" />
+        <style>
+
+            input[type=text] {
+                width: 30%; /* Full width */
+                padding: 12px; /* Some padding */  
+                border: 1px solid #ccc; /* Gray border */
+                border-radius: 4px; /* Rounded borders */
+                box-sizing: border-box; /* Make sure that padding and width stays in place */
+                margin-top: 6px; /* Add a top margin */
+                margin-bottom: 16px; /* Bottom margin */
+                resize: vertical /* Allow the user to vertically resize the textarea (not horizontally) */
+            }
+
+            input[type=password] {
+                width: 30%; /* Full width */
+                padding: 12px; /* Some padding */  
+                border: 1px solid #ccc; /* Gray border */
+                border-radius: 4px; /* Rounded borders */
+                box-sizing: border-box; /* Make sure that padding and width stays in place */
+                margin-top: 6px; /* Add a top margin */
+                margin-bottom: 16px; /* Bottom margin */
+                resize: vertical /* Allow the user to vertically resize the textarea (not horizontally) */
+            }
+
+
+            input[type=submit] {
+                background-color: #4CAF50;
+                color: white;
+                padding: 12px 20px;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+
+            }
+            .signup {
+                border-radius: 5px;
+                background-color: #f2f2f2;
+                padding: 20px;
+
+            }
+
+
+        </style>
+
+    </head>
+    <body>
+        <div class="signup">
+
+
+            <form action="Rigester" method="post" name="sign_up"  enctype="multipart/form-data">
+
+
+                <label for="user">User Name</label><br>
+                <input type="text" id="username" name="name" onchange="allLetter()" required><br>
+                <div id="name" ></div>
+                
+<!--                <a href="start.html">try with different name </a>-->
+                
+                <script src="http://code.jquery.com/jquery-latest.min.js"></script>                                <script>
+                                    
+                                    $(document).on('change', '#username', function () {
+                                       
+                                        var name = $(this).val();
+                                        $.get("checkUsername", "name=" + name, function (errorMassege) {
+                                            
+                                           
+                                                 $("#name").add();
+                                            //var massege = "user name is taken";
+                                            var page ="start.html"
+//                                            var tryy = "<br> <a href=" + page + ">try with different name </a>";
+                                            $("#name").append(errorMassege);
+                                         
+                                            
+                                             
+                                        });
+                                   
+                               });
+                                    
+                                </script>
+               
+
+                <label for="e">E-mail</label><br>
+                <input type="text" name="email" id="email" onchange="validateEmail()" required><br>
+
+                <label for="pass">Password</label><br>
+                <input type="password" id="upassword" name="password" onchange="pass_validation()" required><br>
+
+
+                <label for="add">Address</label><br>
+                <input type="text" id="uaddress" name="address" onchange="address_validation()" required><br>
+
+
+                <label for="phone">Phone Number</label><br>
+                <input type="text" name="phone" id="phone" onchange="phonenumber()" required><br>
+
+                <label for="picture">Profile picture</label><br>
+                <input type="file" name="pic" required="required"/><br/><br/>
+
+
+
+                <input type="submit" value="Sign up"><br>
+
+
+
+            </form>
+        </div>
+        <script>
+                            function formValidation()
+                            {
+                                var uname = document.getElementById("username").value;
+                                var upassword = document.getElementById("upassword").value;
+                                var uaddress = document.getElementById("address").value;
+                                var uemail = document.getElementById("email").value;
+                                var uphone = document.getElementById("phone").value;
+
+                                allLetter(uname);
+                                pass_validation(upassword);
+                                address_validation(uaddress);
+                                validateEmail(uemail);
+                                phonenumber(uphone);
+                            }
+                            //validation for user name 
+                            function allLetter()
+                            {
+                                var uname = document.getElementById("username").value;
+                                var letters = /^[A-Za-z]+$/;
+                                if (uname.match(letters))
+                                {
+                                    return true;
+                                } else
+                                {
+                                    alert("User name must have alphabet character only");
+                                    return false; //uname.focus()
+                                }
+                            }
+
+                            //validation for password 
+                            function pass_validation()
+                            {  //here I will check if the password is empty or bigger that 12 or less that 7 
+                                var max = 12;
+                                var min = 7;
+                                var upass = document.getElementById("upassword").value;
+                                var pass_length = upass.length;
+                                if (pass_length === 0 || pass_length > max || pass_length < min)
+                                {
+                                    alert("password shouldn't  be empty and has to be between" + min + "and" + max);
+                                    return false; //upassword.focus()
+                                }
+
+                                return true;
+                            }
+
+                            //email format 
+                            function validateEmail()
+                            {
+                                var uemail = document.getElementById("email").value;
+                                var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+                                if (uemail.match(mailformat))
+                                {
+                                    return true;
+                                } else
+                                {
+                                    alert("invalid email format");
+                                    uemail.focus();
+                                    return false;
+                                }
+                            }
+
+                            //the length of address has to be 50 or less.
+                            function address_validation()
+                            {  //here I will check if the password is empty or bigger that 12 or less that 7 
+                                var max = 50;
+                                var uaddress = document.getElementById("address").value;
+                                var address_length = uaddress.length;
+                                if (address_length > max)
+                                {
+                                    alert("address should not be bigger than " + max);
+                                    return false; //upassword.focus()
+                                }
+
+                                return true;
+                            }
+
+                            //we validate a phone number of 10 digits with no comma, no spaces,
+                            // no punctuation and there will be no + sign in front the number.
+                            function phonenumber()
+                            {
+                                var phoneno = /^\d{10}$/;
+                                var uphone = document.getElementById("phone").value;
+                                if (uphone.value.match(phoneno))
+                                {
+                                    return true;
+                                } else
+                                {
+                                    alert("phone");
+                                    return false;
+                                }
+                            }
+
+
+        </script> 
+
+
+
+    </body>
+</html>
